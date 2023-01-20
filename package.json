@@ -1,0 +1,19 @@
+{
+  "name": "beeweb-task-backend",
+  "version": "1.0.0",
+  "description": "Slack-like app backend part",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kyurusezzi/beeweb-task-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kyurusezzi/beeweb-task-backend/issues"
+  },
+  "homepage": "https://github.com/kyurusezzi/beeweb-task-backend#readme"
+}
