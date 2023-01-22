@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../configs/db.config");
-const { Subdomain } = require("./subdomains.model");
-const { User } = require("./users.model");
+const { Subdomain } = require("./subdomain.model");
+const { User } = require("./user.model");
 
 const Workspace = sequelize.define("Workspace", {
   name: {
@@ -10,10 +10,15 @@ const Workspace = sequelize.define("Workspace", {
   },
 });
 
-const WorkspaceSubdomain = Workspace.belongsTo(Subdomain, {
-  foreignKey: { name: "subdomainId", allowNull: true },
+Subdomain.hasOne(Workspace, {
+  foreignKey: { name: "subdomainId", allowNull: false },
   as: "subdomain",
   onDelete: "CASCADE",
+});
+
+Workspace.belongsTo(Subdomain, {
+  foreignKey: { name: "subdomainId", allowNull: false },
+  as: "subdomain",
 });
 
 Workspace.belongsToMany(User, {
@@ -28,5 +33,5 @@ User.belongsToMany(Workspace, {
 
 module.exports = {
   Workspace,
-  WorkspaceSubdomain,
+  // WorkspaceSubdomain,
 };
