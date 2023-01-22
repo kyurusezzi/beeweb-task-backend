@@ -1,6 +1,8 @@
-const { Subdomain } = require("../models/subdomains.model");
-const { User } = require("../models/users.model");
-const { Workspace } = require("../models/workspaces.model");
+const { Subdomain } = require("../models/subdomain.model");
+const { User } = require("../models/user.model");
+const { Workspace } = require("../models/workspace.model");
+
+const { deleteSubdomain } = require("./subdomains.service");
 
 const create = async (name, subdomainTitle, userId) => {
   try {
@@ -79,14 +81,21 @@ const updateById = async (id, payload) => {
 
 const deleteById = async (id) => {
   try {
-    const deleted = await Workspace.destroy({
+    const { subdomainId } = await Workspace.findOne({
+      where: id,
+      include: ["subdomain"],
+      raw: true,
+    });
+    const deletedCount = await Workspace.destroy({
       where: {
         id,
       },
     });
-    if (deleted) {
+
+    const isDeletedSubdomain = await deleteSubdomain(subdomainId);
+    if (deletedCount && isDeletedSubdomain) {
       return {
-        deletedCount: 1,
+        deletedCount,
       };
     }
   } catch (error) {

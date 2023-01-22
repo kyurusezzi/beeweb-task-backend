@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const routes = require("./routes/routes");
 const { sequelize } = require("./configs/db.config");
-const { initialize } = require("./middlewares/auth.middleware");
+const { initialize: authInitialize } = require("./middlewares/auth.middleware");
 
 (async () => {
   // await sequelize.sync({ force: true });
@@ -10,8 +10,9 @@ const { initialize } = require("./middlewares/auth.middleware");
 
 const app = express();
 
-app.use(initialize);
+app.use(authInitialize);
 app.use(express.json());
+
 app.use(routes.authRoutes);
 app.use(routes.workspacesRoutes);
 app.use(routes.subdomainsRoutes);

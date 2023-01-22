@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { Subdomain } = require("../models/subdomains.model");
+const { Subdomain } = require("../models/subdomain.model");
 const generateSimilarNames = require("../utils/generateSubdomains");
 
 const checkMatchings = async (subdomain) => {
@@ -29,6 +29,16 @@ const suggestSubdomains = async (subdomain) => {
   };
 };
 
+const deleteSubdomain = async (id) => {
+  try {
+    const isDeleted = Subdomain.destroy({ where: { id } });
+    return isDeleted;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   suggestSubdomains,
+  deleteSubdomain,
 };
