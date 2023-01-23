@@ -6,9 +6,9 @@ const routes = require("./routes/routes");
 const { sequelize } = require("./configs/db.config");
 const { initialize: authInitialize } = require("./middlewares/auth.middleware");
 
-(async () => {
-  await sequelize.sync({ force: true });
-})();
+// (async () => {
+//   await sequelize.sync({ force: true });
+// })(); // this part allows us to fully drop all tables and then sync our db
 
 const app = express();
 
