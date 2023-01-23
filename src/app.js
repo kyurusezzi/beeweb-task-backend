@@ -7,7 +7,7 @@ const { sequelize } = require("./configs/db.config");
 const { initialize: authInitialize } = require("./middlewares/auth.middleware");
 
 (async () => {
-  // await sequelize.sync({ force: true });
+  await sequelize.sync({ force: true });
 })();
 
 const app = express();

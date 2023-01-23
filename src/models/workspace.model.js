@@ -33,5 +33,4 @@ User.belongsToMany(Workspace, {
 
 module.exports = {
   Workspace,
-  // WorkspaceSubdomain,
 };
