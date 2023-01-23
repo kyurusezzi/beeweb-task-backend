@@ -4,7 +4,17 @@ const generateSimilarNames = require("../utils/generateSubdomains");
 
 const checkMatchings = async (subdomain) => {
   try {
-    const matchings = await Subdomain.findAll({
+    let matchings = [];
+    if (
+      !(await Subdomain.findOne({
+        where: {
+          title: subdomain,
+        },
+      }))
+    ) {
+      return matchings;
+    }
+    matchings = await Subdomain.findAll({
       where: {
         title: { [Op.startsWith]: subdomain },
       },
@@ -21,6 +31,8 @@ const suggestSubdomains = async (subdomain) => {
   const matchingSubdomains = (await checkMatchings(subdomain)).map(
     ({ title }) => title
   );
+
+  console.log(matchingSubdomains);
   return {
     isAvailable: !matchingSubdomains.length,
     suggestions: matchingSubdomains.length
@@ -38,7 +50,17 @@ const deleteSubdomain = async (id) => {
   }
 };
 
+const getSubdomainById = async (id) => {
+  try {
+    const subdomain = Subdomain.findOne({ where: { id } });
+    return subdomain;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   suggestSubdomains,
   deleteSubdomain,
+  getSubdomainById,
 };
