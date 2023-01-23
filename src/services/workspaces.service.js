@@ -43,9 +43,9 @@ const getAll = async () => {
       raw: true,
       include: [
         {
-          all: false,
-          model: User,
-          attributes: ["id"],
+          model: Subdomain,
+          as: "subdomain",
+          attributes: ["title"],
         },
       ],
     });

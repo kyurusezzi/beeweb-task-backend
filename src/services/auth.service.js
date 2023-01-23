@@ -5,8 +5,8 @@ const { comparePassword } = require("../utils/passwordHelper");
 const signup = async (email, password, fullName) => {
   try {
     const user = await createUser({ email, password, fullName });
-    const token = await login(user.email, password);
-    return token;
+    const responseDto = await login(user.email, password);
+    return responseDto;
   } catch (error) {
     console.log(error);
   }
@@ -23,7 +23,7 @@ const login = async (email, password) => {
       const payload = { id: user.id };
 
       const token = jwt.sign(payload, process.env.JWT_SECRET);
-      return token;
+      return { token, user: { fullName: user.fullName } };
     }
   } catch (error) {
     console.log(error);

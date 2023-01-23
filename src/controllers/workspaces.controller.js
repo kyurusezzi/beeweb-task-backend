@@ -1,4 +1,5 @@
 const workspacesService = require("../services/workspaces.service");
+const { getSubdomainById } = require("../services/subdomains.service");
 const isNumeric = require("../utils/isNumeric");
 
 const workspacesController = {
@@ -7,16 +8,30 @@ const workspacesController = {
       name: req.body.name,
       subdomain: req.body.subdomain,
     };
+
     const createdWorkspace = await workspacesService.create(
       data.name,
       data.subdomain,
       req.user.id
     );
-    res.status(200).send(createdWorkspace);
+
+    const responseDto = {
+      id: createdWorkspace.id,
+      name: createdWorkspace.name,
+      subdomain: createdWorkspace.subdomain.title,
+    };
+    res.status(200).send(responseDto);
   },
   getAllWorkspaces: async (req, res, next) => {
     const allWorkspaces = await workspacesService.getAll();
-    res.status(200).send(allWorkspaces);
+
+    const responseDto = allWorkspaces.map((workspace) => ({
+      id: workspace.id,
+      name: workspace.name,
+      subdomain: workspace["subdomain.title"],
+    }));
+
+    res.status(200).send(responseDto);
   },
   getWorkspaceById: async (req, res, next) => {
     const { id } = req.params;
@@ -52,7 +67,15 @@ const workspacesController = {
       return;
     }
 
-    res.status(200).send(updatedWorkspace);
+    const { title } = await getSubdomainById(updatedWorkspace.subdomainId);
+
+    const responseDto = {
+      id: updatedWorkspace.id,
+      name: updatedWorkspace.name,
+      subdomain: title,
+    };
+
+    res.status(200).send(responseDto);
   },
   deleteWorkspaceById: async (req, res, next) => {
     const { id } = req.params;
